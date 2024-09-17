@@ -1,42 +1,78 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Hospede {
-    private int idHospede;
-    private String nome;
-    private String telefone;
-    private String email;
-    List<Locacao> listaDeLocacoes;
-    List<Consumo> listaDeConsumos;
-    List<Servico> listaDeServicoSolicitados;
+    protected String nome;
+    protected String cpf;
+    protected Date dataNascimento;
+    protected String contato;
+    protected List<Servico> listaDeServicosSolicitados;
+    protected List<Consumo> listaDeConsumos;
 
-    public Hospede(int idHospede, String nome, String telefone, String email, List<Locacao> listaDeLocacoes, List<Consumo> listaDeConsumos, List<Servico> listaDeServicoSolicitados) {
-        this.idHospede = idHospede;
+    public Hospede(String nome, String cpf, Date dataNascimento, String contato) {
         this.nome = nome;
-        this.telefone = telefone;
-        this.email = email;
-        this.listaDeLocacoes = new ArrayList<>();
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.contato = contato;
+        this.listaDeServicosSolicitados = new ArrayList<>();
         this.listaDeConsumos = new ArrayList<>();
-        this.listaDeServicoSolicitados = new ArrayList<>();
-    }
-    public void registrarConsumo(Item item) {
-        // Lógica de registro de consumo
     }
 
     public void solicitarServico(Servico servico) {
-        listaDeServicoSolicitados.add(servico);
+        listaDeServicosSolicitados.add(servico);
+        System.out.println("Serviço solicitado: " + servico.getTipo() + " para o hóspede " + nome);
     }
 
+    public void adicionarConsumo(Item item) {
 
-
-    public int getIdHospede() {
-        return idHospede;
+        listaDeConsumos.stream()
+                .filter(consumo -> consumo.getItem().equals(item))
+                .findFirst()
+                .ifPresentOrElse(
+                        consumo -> {
+                            consumo.incrementarQuantidade();
+                            System.out.println("Consumo atualizado: " + item.getNome() + ", quantidade: " + consumo.getQuantidade());
+                        },
+                        () -> {
+                            Consumo novoConsumo = new Consumo(this, item, 1);
+                            listaDeConsumos.add(novoConsumo);
+                            System.out.println("Item consumido: " + item.getNome() + ", quantidade: 1");
+                        }
+                );
     }
 
-    public void setIdHospede(int idHospede) {
-        this.idHospede = idHospede;
+    public void removerConsumo(Item item) {
+        listaDeConsumos.stream()
+                .filter(consumo -> consumo.getItem().equals(item))
+                .findFirst()
+                .ifPresentOrElse(
+                        consumo -> {
+                            consumo.decrementarQuantidade();
+                            System.out.println("Consumo removido: " + item.getNome() + ", quantidade restante: " + consumo.getQuantidade());
+
+
+                            if (consumo.getQuantidade() <= 0) {
+                                listaDeConsumos.remove(consumo);
+                                System.out.println("Item " + item.getNome() + " removido do consumo.");
+                            }
+                        },
+                        () -> System.out.println("Item " + item.getNome() + " não encontrado nos consumos.")
+                );
+    }
+
+    public double calcularTotalConsumo() {
+        return listaDeConsumos.stream()
+                .mapToDouble(consumo -> consumo.getItem().getPreco() * consumo.getQuantidade())
+                .sum();
+    }
+
+    public double calcularTotalServicos() {
+        return listaDeServicosSolicitados.stream()
+                .mapToDouble(Servico::getPreco)
+                .sum();
     }
 
     public String getNome() {
@@ -47,28 +83,36 @@ public class Hospede {
         this.nome = nome;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getEmail() {
-        return email;
+    public Date getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
-    public List<Locacao> getListaDeLocacoes() {
-        return listaDeLocacoes;
+    public String getContato() {
+        return contato;
     }
 
-    public void setListaDeLocacoes(List<Locacao> listaDeLocacoes) {
-        this.listaDeLocacoes = listaDeLocacoes;
+    public void setContato(String contato) {
+        this.contato = contato;
+    }
+
+    public List<Servico> getListaDeServicosSolicitados() {
+        return listaDeServicosSolicitados;
+    }
+
+    public void setListaDeServicosSolicitados(List<Servico> listaDeServicosSolicitados) {
+        this.listaDeServicosSolicitados = listaDeServicosSolicitados;
     }
 
     public List<Consumo> getListaDeConsumos() {
@@ -77,26 +121,5 @@ public class Hospede {
 
     public void setListaDeConsumos(List<Consumo> listaDeConsumos) {
         this.listaDeConsumos = listaDeConsumos;
-    }
-
-    public List<Servico> getListaDeServicoSolicitados() {
-        return listaDeServicoSolicitados;
-    }
-
-    public void setListaDeServicoSolicitados(List<Servico> listaDeServicoSolicitados) {
-        this.listaDeServicoSolicitados = listaDeServicoSolicitados;
-    }
-
-    @Override
-    public String toString() {
-        return "Hospede{" +
-                "idHospede=" + idHospede +
-                ", nome='" + nome + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", email='" + email + '\'' +
-                ", listaDeLocacoes=" + listaDeLocacoes +
-                ", listaDeConsumos=" + listaDeConsumos +
-                ", listaDeServicoSolicitados=" + listaDeServicoSolicitados +
-                '}';
     }
 }

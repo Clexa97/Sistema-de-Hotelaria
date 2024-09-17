@@ -6,24 +6,21 @@ import java.util.List;
 public class Quarto {
     private int numero;
     private CategoriaQuarto categoria;
-    private double precoDiaria;
-    private List<Item> listaDeItens;
-    private List<Locacao> listaDeLocacoes;
+    private boolean ocupado;
+    private List<Locacao> locacoes;
 
-    public Quarto(int numero, CategoriaQuarto categoria, double precoDiaria, List<Item> listaDeItens, List<Locacao> listaDeLocacoes) {
-        this.numero = numero;
-        this.categoria = categoria;
-        this.precoDiaria = precoDiaria;
-        this.listaDeItens = new ArrayList<>();
-        this.listaDeLocacoes = new ArrayList<>();
+    public boolean isOcupado() {
+        return ocupado;
     }
 
-    public void adicionarItem(Item item) {
-        listaDeItens.add(item);
+    public void adicionarLocacao(Locacao locacao) {
+        locacoes.add(locacao);
+        this.ocupado = true;
     }
 
-    public double calcularPrecoDiaria() {
-        return precoDiaria;
+    public void removerLocacao(Locacao locacao) {
+        locacoes.remove(locacao);
+        this.ocupado = false;
     }
 
     public int getNumero() {
@@ -42,38 +39,17 @@ public class Quarto {
         this.categoria = categoria;
     }
 
-    public double getPrecoDiaria() {
-        return precoDiaria;
+    public void setOcupado(boolean ocupado) {
+        this.ocupado = ocupado;
     }
 
-    public void setPrecoDiaria(double precoDiaria) {
-        this.precoDiaria = precoDiaria;
+    public List<Locacao> getLocacoes() {
+        return locacoes;
     }
 
-    public List<Item> getListaDeItens() {
-        return listaDeItens;
+    public void setLocacoes(List<Locacao> locacoes) {
+        this.locacoes = locacoes;
     }
 
-    public void setListaDeItens(List<Item> listaDeItens) {
-        this.listaDeItens = listaDeItens;
-    }
 
-    public List<Locacao> getListaDeLocacoes() {
-        return listaDeLocacoes;
-    }
-
-    public void setListaDeLocacoes(List<Locacao> listaDeLocacoes) {
-        this.listaDeLocacoes = listaDeLocacoes;
-    }
-
-    @Override
-    public String toString() {
-        return "Quarto{" +
-                "numero=" + numero +
-                ", categoria=" + categoria +
-                ", precoDiaria=" + precoDiaria +
-                ", listaDeItens=" + listaDeItens +
-                ", listaDeLocacoes=" + listaDeLocacoes +
-                '}';
-    }
 }

@@ -1,30 +1,42 @@
 package model;
 
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
+
 
 public class Locacao {
     private int idLocacao;
     private Hospede hospede;
     private Quarto quarto;
-    private Date dateEntrada;
-    private Date dateSaida;
+    private Date dataEntrada;
+    private Date dataSaida;
     private Funcionario funcionarioResponsavel;
-    private List<Diaria> listaDeDiarias;
 
-    public Locacao(int idLocacao, Hospede hospede, Quarto quarto, Date dateEntrada, Date dateSaida, Funcionario funcionarioResponsavel, List<Diaria> listaDeDiarias) {
-        this.idLocacao = idLocacao;
-        this.hospede = hospede;
-        this.quarto = quarto;
-        this.dateEntrada = dateEntrada;
-        this.dateSaida = dateSaida;
-        this.funcionarioResponsavel = funcionarioResponsavel;
-        this.listaDeDiarias = new ArrayList<>();
-    }
+    public void encerrarLocacao() {
 
-    public void adicionarDiaria(Diaria diaria) {
-        listaDeDiarias.add(diaria);
+        this.dataSaida = new Date();
+
+
+        quarto.setOcupado(false);
+
+
+        long diferencaMillis = dataSaida.getTime() - dataEntrada.getTime();
+        long diferencaDias = (diferencaMillis / (1000 * 60 * 60 * 24)) + 1; //
+
+        double valorTotalDiarias = diferencaDias * quarto.getCategoria().getPrecoDiaria();
+
+        System.out.println("Locação encerrada para o hóspede: " + hospede.getNome());
+        System.out.println("Número de dias de ocupação: " + diferencaDias);
+        System.out.println("Valor total das diárias: R$ " + valorTotalDiarias);
+
+        double valorTotalConsumo = hospede.calcularTotalConsumo();
+        double valorTotalServicos = hospede.calcularTotalServicos();
+
+        System.out.println("Valor total dos consumos: R$ " + valorTotalConsumo);
+        System.out.println("Valor total dos serviços: R$ " + valorTotalServicos);
+
+        double valorTotalFinal = valorTotalDiarias + valorTotalConsumo + valorTotalServicos;
+        System.out.println("Valor total final a ser pago: R$ " + valorTotalFinal);
     }
 
     public int getIdLocacao() {
@@ -51,20 +63,20 @@ public class Locacao {
         this.quarto = quarto;
     }
 
-    public Date getDateEntrada() {
-        return dateEntrada;
+    public Date getDataEntrada() {
+        return dataEntrada;
     }
 
-    public void setDateEntrada(Date dateEntrada) {
-        this.dateEntrada = dateEntrada;
+    public void setDataEntrada(Date dataEntrada) {
+        this.dataEntrada = dataEntrada;
     }
 
-    public Date getDateSaida() {
-        return dateSaida;
+    public Date getDataSaida() {
+        return dataSaida;
     }
 
-    public void setDateSaida(Date dateSaida) {
-        this.dateSaida = dateSaida;
+    public void setDataSaida(Date dataSaida) {
+        this.dataSaida = dataSaida;
     }
 
     public Funcionario getFuncionarioResponsavel() {
@@ -73,26 +85,5 @@ public class Locacao {
 
     public void setFuncionarioResponsavel(Funcionario funcionarioResponsavel) {
         this.funcionarioResponsavel = funcionarioResponsavel;
-    }
-
-    public List<Diaria> getListaDeDiarias() {
-        return listaDeDiarias;
-    }
-
-    public void setListaDeDiarias(List<Diaria> listaDeDiarias) {
-        this.listaDeDiarias = listaDeDiarias;
-    }
-
-    @Override
-    public String toString() {
-        return "Locacao{" +
-                "idLocacao=" + idLocacao +
-                ", hospede=" + hospede +
-                ", quarto=" + quarto +
-                ", dateEntrada=" + dateEntrada +
-                ", dateSaida=" + dateSaida +
-                ", funcionarioResponsavel=" + funcionarioResponsavel +
-                ", listaDeDiarias=" + listaDeDiarias +
-                '}';
     }
 }

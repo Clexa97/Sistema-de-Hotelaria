@@ -1,27 +1,41 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import service.LocacaoService;
 
 public class Funcionario {
     private int idFuncionario;
     private String nome;
     private String cargo;
-    private List<Locacao> listaDeLocacoes;
 
-    public Funcionario(int idFuncionario, String nome, String cargo, List<Locacao> listaDeLocacoes) {
+    public Funcionario(int idFuncionario, String nome, String cargo) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
         this.cargo = cargo;
-        this.listaDeLocacoes = new ArrayList<>();
+    }
+    Locacao locacao = new Locacao();
+
+    public void registrarEntradaHospede(Hospede hospede, Quarto quarto, LocacaoService locacaoService) {
+        if (quarto.isOcupado()) {
+            System.out.println("O quarto " + quarto.getNumero() + " já está ocupado.");
+            return;
+        }
+
+        locacaoService.registrarEntrada(hospede, quarto, locacao);
+
+        System.out.println("Entrada do hóspede " + hospede.getNome() + " registrada no quarto " + quarto.getNumero() + ".");
     }
 
-    public void registrarLocacao(Locacao locacao) {
-        listaDeLocacoes.add(locacao);
-    }
 
-    public void encerrarLocacao(Locacao locacao) {
-        listaDeLocacoes.remove(locacao);
+    public void registrarSaidaHospede(Hospede hospede, Quarto quarto, LocacaoService locacaoService) {
+        if (!quarto.isOcupado()) {
+            System.out.println("O quarto " + quarto.getNumero() + " já está desocupado.");
+            return;
+        }
+
+        locacaoService.registrarSaida(hospede, quarto,locacao);
+
+        System.out.println("Saída do hóspede " + hospede.getNome() + " registrada no quarto " + quarto.getNumero() + ".");
     }
 
     public int getIdFuncionario() {
@@ -46,23 +60,5 @@ public class Funcionario {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
-    }
-
-    public List<Locacao> getListaDeLocacoes() {
-        return listaDeLocacoes;
-    }
-
-    public void setListaDeLocacoes(List<Locacao> listaDeLocacoes) {
-        this.listaDeLocacoes = listaDeLocacoes;
-    }
-
-    @Override
-    public String toString() {
-        return "Funcionario{" +
-                "idFuncionario=" + idFuncionario +
-                ", nome='" + nome + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", listaDeLocacoes=" + listaDeLocacoes +
-                '}';
     }
 }

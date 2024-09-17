@@ -1,4 +1,7 @@
 package exception;
 
-public class HospedeNaoEncontradoException {
+public class HospedeNaoEncontradoException extends  RuntimeException{
+    public HospedeNaoEncontradoException(String mensagem) {
+        super(mensagem);
+    }
 }

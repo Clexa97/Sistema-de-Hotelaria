@@ -1,30 +1,21 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Consumo {
-    private int idConsumo;
     private Hospede hospede;
-    private List<Item> listaDeItens;
-    private double valorTotal;
+    private Item item;
+    private int quantidade;
 
-    public Consumo(int idConsumo, Hospede hospede, List<Item> listaDeItens, double valorTotal) {
-        this.idConsumo = idConsumo;
+    public Consumo(Hospede hospede, Item item, int quantidade) {
         this.hospede = hospede;
-        this.listaDeItens = new ArrayList<>();
-        this.valorTotal = valorTotal;
+        this.item = item;
+        this.quantidade = quantidade;
     }
-    public double calcularValorTotal() {
-        return listaDeItens.stream().mapToDouble(Item::calcularPrecoTotal).sum();
-    }
-
-    public int getIdConsumo() {
-        return idConsumo;
+    public void decrementarQuantidade() {
+        this.quantidade--;
     }
 
-    public void setIdConsumo(int idConsumo) {
-        this.idConsumo = idConsumo;
+    public void incrementarQuantidade() {
+        this.quantidade++;
     }
 
     public Hospede getHospede() {
@@ -35,29 +26,19 @@ public class Consumo {
         this.hospede = hospede;
     }
 
-    public List<Item> getListaDeItens() {
-        return listaDeItens;
+    public Item getItem() {
+        return item;
     }
 
-    public void setListaDeItens(List<Item> listaDeItens) {
-        this.listaDeItens = listaDeItens;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
-    public double getValorTotal() {
-        return valorTotal;
+    public int getQuantidade() {
+        return quantidade;
     }
 
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
-    @Override
-    public String toString() {
-        return "Consumo{" +
-                "idConsumo=" + idConsumo +
-                ", hospede=" + hospede +
-                ", listaDeItens=" + listaDeItens +
-                ", valorTotal=" + valorTotal +
-                '}';
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 }
