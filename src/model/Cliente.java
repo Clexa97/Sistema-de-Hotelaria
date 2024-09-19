@@ -1,30 +1,41 @@
 package model;
 
 import exception.QuartoIndisponivelException;
-import service.ReservaService;
 
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 
 public class Cliente extends Hospede{
 
-    public Cliente(String nome, String cpf, String contato) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.contato = contato;
+    private List<Reserva> reservas;
+
+    public Cliente(String nome, String cpf, Date dataNascimento, String contato) {
+        super(nome, cpf, dataNascimento, contato);
+        this.reservas = new ArrayList<>();
     }
-    public void fazerReserva(Reserva reserva, ReservaService reservaService) {
-        try {
-            reservaService.fazerReserva(reserva);
+
+    public void fazerReserva(Reserva reserva, List<Quarto> quartosDisponiveis) {
+        if (quartosDisponiveis.contains(reserva.getQuarto())) {
+            this.reservas.add(reserva);
             System.out.println("Reserva feita com sucesso!");
-        } catch (QuartoIndisponivelException e) {
-            System.out.println("Erro ao fazer reserva: " + e.getMessage());
+        } else {
+            throw new QuartoIndisponivelException("O quarto solicitado não está disponível.");
         }
     }
 
-    public void cancelarReserva(Reserva reserva, ReservaService reservaService) {
-        reservaService.cancelarReserva(reserva.getIdReserva());
-        System.out.println("Reserva cancelada com sucesso!");
+    public void cancelarReserva(Reserva reserva) {
+        if (reservas.remove(reserva)) {
+            System.out.println("Reserva cancelada com sucesso!");
+        } else {
+            System.out.println("Reserva não encontrada.");
+        }
     }
 
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
 
 }

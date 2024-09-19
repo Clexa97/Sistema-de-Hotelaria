@@ -8,16 +8,47 @@ public class Reserva {
     private Quarto quarto;
     private Date dataReserva;
     private Date dataFimReserva;
+    private boolean confirmada;
+    private boolean cancelada;
 
     public Reserva(Cliente cliente, Quarto quarto) {
     }
 
+    public Reserva(Cliente cliente, Quarto quarto, Date dataReserva, Date dataFimReserva) {
+        this.cliente = cliente;
+        this.quarto = quarto;
+        this.dataReserva = dataReserva;
+        this.dataFimReserva = dataFimReserva;
+        this.confirmada = false;
+        this.cancelada = false;
+    }
+
     public void confirmarReserva() {
-        // Lógica para confirmar a reserva
+
+        if (cancelada) {
+            System.out.println("Não é possível confirmar uma reserva cancelada.");
+            return;
+        }
+
+        if (confirmada) {
+            System.out.println("A reserva já está confirmada.");
+        } else {
+            confirmada = true;
+            System.out.println("Reserva confirmada com sucesso para o quarto " + quarto.getNumero());
+        }
     }
 
     public void cancelarReserva() {
-        // Lógica para cancelar a reserva
+
+        if (confirmada && !cancelada) {
+            cancelada = true;
+            confirmada = false;
+            System.out.println("Reserva cancelada com sucesso.");
+        } else if (cancelada) {
+            System.out.println("A reserva já foi cancelada anteriormente.");
+        } else {
+            System.out.println("A reserva não pode ser cancelada pois não foi confirmada.");
+        }
     }
 
     public int getIdReserva() {
@@ -58,5 +89,21 @@ public class Reserva {
 
     public void setDataFimReserva(Date dataFimReserva) {
         this.dataFimReserva = dataFimReserva;
+    }
+
+    public boolean isConfirmada() {
+        return confirmada;
+    }
+
+    public void setConfirmada(boolean confirmada) {
+        this.confirmada = confirmada;
+    }
+
+    public boolean isCancelada() {
+        return cancelada;
+    }
+
+    public void setCancelada(boolean cancelada) {
+        this.cancelada = cancelada;
     }
 }

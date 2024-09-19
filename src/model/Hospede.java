@@ -21,6 +21,7 @@ public class Hospede {
         this.listaDeConsumos = new ArrayList<>();
     }
 
+
     public void solicitarServico(Servico servico) {
         listaDeServicosSolicitados.add(servico);
         System.out.println("Serviço solicitado: " + servico.getTipo() + " para o hóspede " + nome);

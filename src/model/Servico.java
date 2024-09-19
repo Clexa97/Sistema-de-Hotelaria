@@ -1,10 +1,15 @@
 package model;
 
-import java.util.List;
 
 public class Servico {
     private TipoServico tipo;
     private double preco;
+
+
+    public Servico(TipoServico tipo, double preco) {
+        this.tipo = tipo;
+        this.preco = preco;
+    }
 
     public double calcularPrecoServico() {
         return preco;
@@ -24,5 +29,10 @@ public class Servico {
 
     public void setPreco(double preco) {
         this.preco = preco;
+    }
+
+    @Override
+    public String toString() {
+        return "Serviço: " + tipo + ", Preço: R$ " + preco;
     }
 }
