@@ -3,6 +3,13 @@ package model;
 public class Item {
     private String nome;
     private double preco;
+    private int quantia;
+
+    public Item(String nome, double preco, int quantia) {
+        this.nome = nome;
+        this.preco = preco;
+        this.quantia = quantia;
+    }
 
 
     public String getNome() {
@@ -27,7 +34,8 @@ public class Item {
 
         Item item = (Item) obj;
 
-        return nome.equals(item.nome);
+        return nome != null && nome.equals(item.nome);
     }
+
 
 }

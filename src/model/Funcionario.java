@@ -1,7 +1,7 @@
 package model;
 
 
-import service.LocacaoService;
+import java.util.Date;
 
 public class Funcionario {
     private int idFuncionario;
@@ -15,25 +15,31 @@ public class Funcionario {
     }
     Locacao locacao = new Locacao();
 
-    public void registrarEntradaHospede(Hospede hospede, Quarto quarto, LocacaoService locacaoService) {
+    public void registrarEntradaHospede(Hospede hospede, Quarto quarto, Locacao locacao) {
         if (quarto.isOcupado()) {
             System.out.println("O quarto " + quarto.getNumero() + " já está ocupado.");
             return;
         }
 
-        locacaoService.registrarEntrada(hospede, quarto, locacao);
+        quarto.setOcupado(true);
+
+        locacao.setHospede(hospede);
+        locacao.setQuarto(quarto);
+        locacao.setDataEntrada(new Date());
 
         System.out.println("Entrada do hóspede " + hospede.getNome() + " registrada no quarto " + quarto.getNumero() + ".");
     }
 
 
-    public void registrarSaidaHospede(Hospede hospede, Quarto quarto, LocacaoService locacaoService) {
+    public void registrarSaidaHospede(Hospede hospede, Quarto quarto, Locacao locacao) {
         if (!quarto.isOcupado()) {
             System.out.println("O quarto " + quarto.getNumero() + " já está desocupado.");
             return;
         }
 
-        locacaoService.registrarSaida(hospede, quarto,locacao);
+        quarto.setOcupado(false);
+
+        locacao.setDataSaida(new Date());
 
         System.out.println("Saída do hóspede " + hospede.getNome() + " registrada no quarto " + quarto.getNumero() + ".");
     }

@@ -9,6 +9,9 @@ public class Quarto {
     private boolean ocupado;
     private List<Locacao> locacoes;
 
+    public Quarto(int i, CategoriaQuarto categoriaQuarto, boolean b) {
+    }
+
     public boolean isOcupado() {
         return ocupado;
     }
